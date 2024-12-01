@@ -1,0 +1,109 @@
+import java.util.Scanner;
+
+abstract class Personagem {
+    protected String nome;
+    protected int hp;
+    protected int sp;
+
+    public Personagem(String nome) {
+        this.nome = nome;
+        this.hp = 100;
+        this.sp = 50;
+    }
+
+    public abstract void habilidade();
+
+    public void mostrarStatus() {
+        System.out.println("Nome: " + nome + " | HP: " + hp + " | SP: " + sp);
+    }
+}
+
+class Mago extends Personagem {
+    public Mago(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void habilidade() {
+        System.out.println(nome + " lançou uma magia arcana!");
+        sp -= 10;
+    }
+}
+
+class Guerreiro extends Personagem {
+    public Guerreiro(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void habilidade() {
+        System.out.println(nome + " usou armaduras pesadas para aumentar a defesa!");
+        hp += 20;
+    }
+}
+
+class Sacerdote extends Personagem {
+    public Sacerdote(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void habilidade() {
+        System.out.println(nome + " fez um milagre!");
+        sp -= 15;
+        hp += 10;
+    }
+}
+
+class Ladrao extends Personagem {
+    public Ladrao(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void habilidade() {
+        System.out.println(nome + " ficou invisível!");
+        sp -= 5;
+    }
+}
+
+public class Classe {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do seu personagem: ");
+        String nome = scanner.nextLine();
+
+        System.out.println("Escolha uma classe: ");
+        System.out.println("1. Mago");
+        System.out.println("2. Guerreiro");
+        System.out.println("3. Sacerdote");
+        System.out.println("4. Ladrão");
+        int escolha = scanner.nextInt();
+
+        Personagem personagem = null;
+
+        switch (escolha) {
+            case 1:
+                personagem = new Mago(nome);
+                break;
+            case 2:
+                personagem = new Guerreiro(nome);
+                break;
+            case 3:
+                personagem = new Sacerdote(nome);
+                break;
+            case 4:
+                personagem = new Ladrao(nome);
+                break;
+            default:
+                System.out.println("Classe inválida!");
+                return;
+        }
+
+        personagem.mostrarStatus();
+        personagem.habilidade();
+        personagem.mostrarStatus();
+
+        scanner.close();
+    }
+}
