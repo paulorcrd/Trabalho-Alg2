@@ -1,79 +1,109 @@
-class Token {
+import java.util.Scanner;
+
+abstract class Personagem {
     protected String nome;
-    protected double valor;
+    protected int hp;
+    protected int sp;
 
-    public Token(String nome, double valor) {
+    public Personagem(String nome) {
         this.nome = nome;
-        this.valor = valor;
+        this.hp = 100;
+        this.sp = 50;
     }
 
-    public String getNome() {
-        return nome;
-    }
+    public abstract void habilidade();
 
-    public double getValor() {
-        return valor;
-    }
-
-    @Override
-    public String toString() {
-        return "Token{" +
-                "nome='" + nome + '\'' +
-                ", valor=" + valor +
-                '}';
+    public void mostrarStatus() {
+        System.out.println("Nome: " + nome + " | HP: " + hp + " | SP: " + sp);
     }
 }
 
-class TokenFungivel extends Token {
-    private int quantidade;
-
-    public TokenFungivel(String nome, double valor, int quantidade) {
-        super(nome, valor);
-        this.quantidade = quantidade;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
+class Mago extends Personagem {
+    public Mago(String nome) {
+        super(nome);
     }
 
     @Override
-    public String toString() {
-        return "TokenFungivel{" +
-                "nome='" + nome + '\'' +
-                ", valor=" + valor +
-                ", quantidade=" + quantidade +
-                '}';
+    public void habilidade() {
+        System.out.println(nome + " lançou uma magia arcana!");
+        sp -= 10;
     }
 }
 
-class TokenNaoFungivel extends Token {
-    private String idUnico;
-
-    public TokenNaoFungivel(String nome, double valor, String idUnico) {
-        super(nome, valor);
-        this.idUnico = idUnico;
-    }
-
-    public String getIdUnico() {
-        return idUnico;
+class Guerreiro extends Personagem {
+    public Guerreiro(String nome) {
+        super(nome);
     }
 
     @Override
-    public String toString() {
-        return "TokenNaoFungivel{" +
-                "nome='" + nome + '\'' +
-                ", valor=" + valor +
-                ", idUnico='" + idUnico + '\'' +
-                '}';
+    public void habilidade() {
+        System.out.println(nome + " usou armaduras pesadas para aumentar a defesa!");
+        hp += 20;
+    }
+}
+
+class Sacerdote extends Personagem {
+    public Sacerdote(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void habilidade() {
+        System.out.println(nome + " fez um milagre!");
+        sp -= 15;
+        hp += 10;
+    }
+}
+
+class Ladrao extends Personagem {
+    public Ladrao(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void habilidade() {
+        System.out.println(nome + " ficou invisível!");
+        sp -= 5;
     }
 }
 
 public class Classe {
     public static void main(String[] args) {
-        TokenFungivel tokenFungivel = new TokenFungivel("Token Fungível", 10.0, 100);
-        TokenNaoFungivel tokenNaoFungivel = new TokenNaoFungivel("Token Não Fungível", 50.0, "ID123456");
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do seu personagem: ");
+        String nome = scanner.nextLine();
 
-        System.out.println(tokenFungivel);
-        System.out.println(tokenNaoFungivel);
+        System.out.println("Escolha uma classe: ");
+        System.out.println("1. Mago");
+        System.out.println("2. Guerreiro");
+        System.out.println("3. Sacerdote");
+        System.out.println("4. Ladrão");
+        int escolha = scanner.nextInt();
+
+        Personagem personagem = null;
+
+        switch (escolha) {
+            case 1:
+                personagem = new Mago(nome);
+                break;
+            case 2:
+                personagem = new Guerreiro(nome);
+                break;
+            case 3:
+                personagem = new Sacerdote(nome);
+                break;
+            case 4:
+                personagem = new Ladrao(nome);
+                break;
+            default:
+                System.out.println("Classe inválida!");
+                return;
+        }
+
+        personagem.mostrarStatus();
+        personagem.habilidade();
+        personagem.mostrarStatus();
+
+        scanner.close();
     }
 }
